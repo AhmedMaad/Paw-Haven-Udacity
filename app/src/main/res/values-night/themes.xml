@@ -1,0 +1,21 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme.PawHaven"
+        parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+        <item name="colorPrimary">@color/pawhaven_green</item>
+        <item name="colorPrimaryVariant">@color/pawhaven_green_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <item name="colorSecondary">@color/pawhaven_orange</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <item name="colorSurface">@color/black</item>
+
+        <item name="android:statusBarColor">@color/black</item>
+        <item name="android:navigationBarColor">@color/black</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+    </style>
+
+</resources>

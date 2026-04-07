@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="pawhaven_green">#2E6B4F</color>     <!-- Title / Primary -->
+    <color name="pawhaven_green_dark">#255741</color>
+
+    <!-- Accent -->
+    <color name="pawhaven_orange">#F1A33B</color>    <!-- CTA button -->
+    <color name="pawhaven_orange_pressed">#E19124</color>
+
+    <!-- Backgrounds -->
+    <color name="pawhaven_bg">#FFF8EF</color>        <!-- App background -->
+    <color name="pawhaven_surface">#FFFFFF</color>
+
+    <!-- Text -->
+    <color name="pawhaven_text">#1D1E20</color>                <!-- 👈 FIX -->
+    <color name="pawhaven_text_primary">#1D1E20</color>
+    <color name="pawhaven_text_secondary">#5F6368</color>
+
+
+</resources>

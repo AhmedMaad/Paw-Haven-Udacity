@@ -1,0 +1,41 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Theme.PawHaven"
+        parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+        <!-- Primary brand -->
+        <item name="colorPrimary">@color/pawhaven_green</item>
+        <item name="colorPrimaryVariant">@color/pawhaven_green_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <!-- Secondary / accent -->
+        <item name="colorSecondary">@color/pawhaven_orange</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <!-- Backgrounds -->
+        <item name="android:windowBackground">@color/pawhaven_bg</item>
+        <item name="colorSurface">@color/pawhaven_surface</item>
+
+        <!-- System bars -->
+        <item name="android:statusBarColor">@color/pawhaven_bg</item>
+        <item name="android:navigationBarColor">@color/pawhaven_bg</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+    </style>
+
+    <!-- Primary button style -->
+    <style name="Widget.PawHaven.Button"
+        parent="Widget.MaterialComponents.Button">
+
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="cornerRadius">32dp</item>
+
+        <item name="backgroundTint">@color/pawhaven_orange</item>
+        <item name="rippleColor">@color/pawhaven_orange_pressed</item>
+
+        <item name="android:fontFamily">sans-serif-medium</item>
+    </style>
+
+</resources>
