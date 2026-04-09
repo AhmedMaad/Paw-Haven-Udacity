@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import com.udacity.pawhaven.data.Animal
 import com.udacity.pawhaven.data.Repository
 
 
@@ -16,7 +17,6 @@ class PetListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
 
 
         return inflater.inflate(R.layout.fragment_pet_list, container, false)
@@ -35,6 +35,12 @@ class PetListFragment : Fragment() {
 
             animalsContainer.addView(animalView)
         }
+    }
+
+    interface Host {
+        fun onPetSelected(pet: Animal)
+        fun onAddClicked()
+        fun isTwoPane(): Boolean
     }
 
 }

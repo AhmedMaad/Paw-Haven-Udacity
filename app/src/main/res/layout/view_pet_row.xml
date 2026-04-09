@@ -11,18 +11,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:padding="14dp">
 
         <ImageView
             android:id="@+id/petImage"
             android:layout_width="74dp"
             android:layout_height="74dp"
-            android:scaleType="centerCrop"
+            android:background="@color/pawhaven_bg"
             android:contentDescription="@string/pet_image"
-            android:src="@drawable/ic_dog"
-            android:background="@color/pawhaven_bg" />
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_dog" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -35,22 +35,24 @@
                 android:id="@+id/petName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-black"
                 android:text="Bella"
                 android:textColor="@color/pawhaven_text"
-                android:textSize="30sp"
-                android:fontFamily="sans-serif-black" />
+                android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/petAge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
                 android:text="2 years"
                 android:textColor="@color/pawhaven_text"
-                android:textSize="22sp"
-                android:fontFamily="sans-serif-medium" />
+                android:textSize="22sp" />
         </LinearLayout>
 
-        <!--   Make use of Play Pause Component by using this in the XML    -->
+        <include
+            android:id="@+id/play_pause_view"
+            layout="@layout/play_pause_view" />
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

@@ -37,7 +37,9 @@
     <string name="entered_success">Bienvenue à PawHaven 🐾</string>
     <string name="saved_success">Enregistré ✅</string>
 
-    <string name="pawhaven">PawHaven Abri</string>
+    <string name="pawhaven">PawHaven</string>
+
+    <string name="pawhaven_shelter">PawHaven Abri</string>
 
     <string name="paw_icon">Icône de patte</string>
 
