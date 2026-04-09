@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="?attr/buttonBarStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -22,7 +23,8 @@
                 android:layout_height="120dp"
                 android:contentDescription="@string/paw_icon"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_paw" />
+                android:src="@drawable/ic_paw"
+                app:tint="@color/pawhaven_green" />
 
             <TextView
                 android:layout_width="wrap_content"
