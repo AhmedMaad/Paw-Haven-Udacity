@@ -13,12 +13,28 @@
         android:layout_marginTop="64dp"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/paw_icon"
-            android:src="@drawable/paw_haven_shelter" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:contentDescription="@string/paw_icon"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_paw" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="@string/pawhaven"
+                android:textColor="@color/pawhaven_green"
+                android:textSize="40sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
 
         <ImageView
             android:layout_width="match_parent"
