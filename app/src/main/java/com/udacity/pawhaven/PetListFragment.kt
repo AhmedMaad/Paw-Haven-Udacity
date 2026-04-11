@@ -6,10 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
+import androidx.annotation.RawRes
 import androidx.fragment.app.Fragment
 import com.udacity.pawhaven.audio.PawHavenAudioPlayer
 import com.udacity.pawhaven.audio.PawHavenAudioPlayerImpl
+import com.udacity.pawhaven.components.PetRowComponent
 import com.udacity.pawhaven.data.Animal
 import com.udacity.pawhaven.data.Repository
 
@@ -34,39 +35,28 @@ class PetListFragment : Fragment() {
         val animalsContainer: LinearLayout = view.findViewById(R.id.animals_container)
 
         for (pet in Repository.pets) {
-            val animalView = layoutInflater.inflate(R.layout.view_pet_row, animalsContainer, false)
+            val petRow = PetRowComponent(requireContext())
 
-            val animalIV: ImageView = animalView.findViewById(R.id.petImage)
-            val animalNameTV: TextView = animalView.findViewById(R.id.petName)
-            val animalAgeTV: TextView = animalView.findViewById(R.id.petAge)
-
-            val audioView: View = animalView.findViewById(R.id.play_pause_view)
-            val audioIcon: ImageView = audioView.findViewById(R.id.icon)
-
-            animalIV.setImageResource(pet.imageRes)
-            animalNameTV.text = pet.name
-            animalAgeTV.text = getString(R.string.age_years_format, pet.age)
-
-            animalView.setOnClickListener {
-                //pass data to Host..
+            animalsContainer.addView(petRow)
+            petRow.bind(pet) { icon, soundRes ->
+                handleAudio(icon, soundRes)
             }
 
-            audioView.setOnClickListener {
-                handleAudio(audioIcon, pet)
-            }
+            /*animalView.setOnClickListener {
+                //pass data to Host...
+            }*/
 
-            animalsContainer.addView(animalView)
         }
 
     }
 
-    private fun handleAudio(audioIcon: ImageView, pet: Animal) {
+    private fun handleAudio(audioIcon: ImageView, @RawRes audio: Int) {
         if (playingIcon != audioIcon) {
             //Handling diff. audio row selection
             playingIcon?.setImageResource(R.drawable.ic_play)
 
             audioIcon.setImageResource(R.drawable.ic_pause)
-            player.play(pet.soundRes) {
+            player.play(audio) {
                 audioIcon.setImageResource(R.drawable.ic_play)
                 playingIcon = null
             }
