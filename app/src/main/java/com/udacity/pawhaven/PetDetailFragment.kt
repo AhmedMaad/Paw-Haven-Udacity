@@ -1,6 +1,5 @@
 package com.udacity.pawhaven
 
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +12,8 @@ import android.widget.Toast
 import androidx.core.app.ShareCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import com.udacity.pawhaven.audio.PawHavenAudioPlayer
+import com.udacity.pawhaven.audio.PawHavenAudioPlayerImpl
 import com.udacity.pawhaven.data.Animal
 import com.udacity.pawhaven.data.Dog
 import com.udacity.pawhaven.data.Repository
@@ -20,7 +21,7 @@ import com.udacity.pawhaven.data.Role
 
 class PetDetailFragment : Fragment() {
 
-    private lateinit var media: MediaPlayer
+    private lateinit var audio: PawHavenAudioPlayer
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,7 +46,8 @@ class PetDetailFragment : Fragment() {
         animalIV.setImageResource(pet.imageRes)
         animalNameTV.text = pet.name
         animalAgeTV.text = getString(R.string.age_years_format, pet.age)
-        media = MediaPlayer.create(context, pet.soundRes)
+        audio = PawHavenAudioPlayerImpl.getInstance(requireContext())
+
 
         shareIB.setOnClickListener {
             ShareCompat
@@ -57,14 +59,15 @@ class PetDetailFragment : Fragment() {
         }
 
         audioIcon.setOnClickListener {
-            media.start()
+            //TODO: Show pause button while playing the audio
+            audio.play(pet.soundRes) {}
         }
 
     }
 
     override fun onPause() {
         super.onPause()
-        media.release()
+        audio.release()
     }
 
     fun setUpAdoptAPawButton(view: View) {
