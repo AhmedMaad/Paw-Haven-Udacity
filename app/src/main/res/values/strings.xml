@@ -76,5 +76,6 @@
     <string name="adoption_coming_soon">Adoption Request submitted</string>
     <string name="preview">Preview</string>
     <string name="adopt_a_paw">Adopt A Paw</string>
+    <string name="share_animal_with">"Share animal with: "</string>
 
 </resources>

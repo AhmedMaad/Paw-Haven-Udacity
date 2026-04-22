@@ -42,7 +42,7 @@ class PetListFragment : Fragment() {
                 handleAudio(icon, soundRes)
             }
 
-            /*animalView.setOnClickListener {
+            /*petRow.setOnClickListener {
                 //pass data to Host...
             }*/
 
@@ -74,10 +74,11 @@ class PetListFragment : Fragment() {
         player.release()
     }
 
+    //Defines PetListFragment.Host interface
+    interface Host {
+        fun onPetSelected(pet: Animal)
+        fun onAddClicked()
+        fun isTwoPane(): Boolean
+    }
 }
 
-interface Host {
-    fun onPetSelected(pet: Animal)
-    fun onAddClicked()
-    fun isTwoPane(): Boolean
-}

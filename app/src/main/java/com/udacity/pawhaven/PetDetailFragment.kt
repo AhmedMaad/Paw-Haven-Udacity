@@ -1,7 +1,7 @@
 package com.udacity.pawhaven
 
+import android.media.MediaPlayer
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +10,17 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ShareCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import com.udacity.pawhaven.data.Animal
 import com.udacity.pawhaven.data.Dog
 import com.udacity.pawhaven.data.Repository
 import com.udacity.pawhaven.data.Role
 
 class PetDetailFragment : Fragment() {
+
+    private lateinit var media: MediaPlayer
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,11 +45,26 @@ class PetDetailFragment : Fragment() {
         animalIV.setImageResource(pet.imageRes)
         animalNameTV.text = pet.name
         animalAgeTV.text = getString(R.string.age_years_format, pet.age)
+        media = MediaPlayer.create(context, pet.soundRes)
 
-        /*shareIB.setOnClickListener{
+        shareIB.setOnClickListener {
+            ShareCompat
+                .IntentBuilder(requireContext())
+                .setType("text/plain")
+                .setChooserTitle(getString(R.string.share_animal_with))
+                .setText(pet.description)
+                .startChooser()
+        }
 
-        }*/
+        audioIcon.setOnClickListener {
+            media.start()
+        }
 
+    }
+
+    override fun onPause() {
+        super.onPause()
+        media.release()
     }
 
     fun setUpAdoptAPawButton(view: View) {
