@@ -1,5 +1,6 @@
 package com.udacity.pawhaven
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,12 +8,15 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.annotation.RawRes
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.udacity.pawhaven.audio.PawHavenAudioPlayer
 import com.udacity.pawhaven.audio.PawHavenAudioPlayerImpl
 import com.udacity.pawhaven.components.PetRowComponent
 import com.udacity.pawhaven.data.Animal
 import com.udacity.pawhaven.data.Repository
+import com.udacity.pawhaven.data.Role
 
 
 class PetListFragment : Fragment() {
@@ -48,6 +52,16 @@ class PetListFragment : Fragment() {
 
         }
 
+        if (Repository.user?.role == Role.VOLUNTEER) {
+            val addFAB: FloatingActionButton = view.findViewById(R.id.add_fab)
+            addFAB.isVisible = true
+            addFAB.setOnClickListener {
+                val i = Intent(requireContext(), AddAnimalActivity::class.java)
+                startActivityForResult(i, 101)
+            }
+        }
+
+
     }
 
     private fun handleAudio(audioIcon: ImageView, @RawRes audio: Int) {
@@ -76,9 +90,19 @@ class PetListFragment : Fragment() {
 
     //Defines PetListFragment.Host interface
     interface Host {
+        //TODO: Navigates to PetDetailActivity on phone
+        //TODO: Shows PetDetailFragment on tablet, on the right
         fun onPetSelected(pet: Animal)
+
+        //TODO: When fab button is clicked, navigates to AddAnimalActivity
+        //TODO: This intent returns an animal that will be then added to Repository.pets
+        //Volunteers can quickly add new animals to the list.
         fun onAddClicked()
+
         fun isTwoPane(): Boolean
     }
+
+    //TODO: The PetListFragment should expose a method refreshPetList, to allow the list to be updated.
+
 }
 

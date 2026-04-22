@@ -11,6 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PawHaven">
         <activity
+            android:name=".AddAnimalActivity"
+            android:exported="false" />
+        <activity
             android:name=".PetDetailActivity"
             android:exported="false" />
         <activity
