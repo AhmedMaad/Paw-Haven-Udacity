@@ -16,7 +16,7 @@ import com.udacity.pawhaven.audio.PawHavenAudioPlayer
 import com.udacity.pawhaven.audio.PawHavenAudioPlayerImpl
 import com.udacity.pawhaven.data.AnimalType
 
-class AddAnimalActivity : AppCompatActivity() {
+class AddAnimalActivity : BaseActivity() {
 
     private lateinit var audio: PawHavenAudioPlayer
 

@@ -15,39 +15,39 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
                 android:contentDescription="@string/paw_icon"
-                android:scaleType="centerCrop"
                 android:src="@drawable/ic_paw"
                 app:tint="@color/pawhaven_green" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="@string/pawhaven"
+                android:layout_marginStart="16dp"
+                android:text="@string/pawhaven_shelter"
                 android:textColor="@color/pawhaven_green"
                 android:textSize="40sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
 
-
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="260dp"
+            android:layout_height="240dp"
+            android:layout_marginTop="32dp"
             android:contentDescription="@string/cute_animal"
-            android:scaleType="centerCrop"
             android:src="@drawable/ic_dog" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
             android:text="@string/description"
             android:textColor="@color/black"
             android:textSize="24sp" />
