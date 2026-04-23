@@ -7,12 +7,9 @@ import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.core.text.isDigitsOnly
-import com.udacity.pawhaven.data.Person
 import com.udacity.pawhaven.data.Repository
-import com.udacity.pawhaven.data.Role
 import com.udacity.pawhaven.data.newInterestedParent
 import com.udacity.pawhaven.data.newVolunteer
-import kotlin.text.toInt
 
 class ProfileActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
