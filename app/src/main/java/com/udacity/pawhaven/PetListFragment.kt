@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RawRes
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -23,6 +24,11 @@ class PetListFragment : Fragment() {
 
     private lateinit var player: PawHavenAudioPlayer
     var playingIcon: ImageView? = null
+
+    private val handleAnimalData =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            //TODO: Handle received Data
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,8 +62,8 @@ class PetListFragment : Fragment() {
             val addFAB: FloatingActionButton = view.findViewById(R.id.add_fab)
             addFAB.isVisible = true
             addFAB.setOnClickListener {
-                val i = Intent(requireContext(), AddAnimalActivity::class.java)
-                startActivityForResult(i, 101)
+                val intent = Intent(requireContext(), AddAnimalActivity::class.java)
+                handleAnimalData.launch(intent)
             }
         }
 
@@ -89,6 +95,7 @@ class PetListFragment : Fragment() {
     }
 
     //Defines PetListFragment.Host interface
+    // to help PetListFragment communicate with the parent activity:
     interface Host {
         //TODO: Navigates to PetDetailActivity on phone
         //TODO: Shows PetDetailFragment on tablet, on the right

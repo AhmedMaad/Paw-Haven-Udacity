@@ -67,6 +67,7 @@ class AddAnimalActivity : BaseActivity() {
 
     private fun handleSound(soundRes: Int) {
 
+        //TODO: Use the play/pause view in the xml
         //TODO: Show pause button while playing the audio
 
         val soundIV: ImageView = findViewById(R.id.sound_iv)

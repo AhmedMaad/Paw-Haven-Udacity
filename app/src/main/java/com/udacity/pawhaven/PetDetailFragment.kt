@@ -59,6 +59,7 @@ class PetDetailFragment : Fragment() {
         }
 
         audioIcon.setOnClickListener {
+            //TODO: Use the play/pause view in the xml
             //TODO: Show pause button while playing the audio
             audio.play(pet.soundRes) {}
         }
