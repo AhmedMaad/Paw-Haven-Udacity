@@ -1,13 +1,12 @@
 package com.udacity.pawhaven
 
-import android.content.Intent
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RawRes
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -25,10 +24,13 @@ class PetListFragment : Fragment() {
     private lateinit var player: PawHavenAudioPlayer
     var playingIcon: ImageView? = null
 
-    private val handleAnimalData =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            //TODO: Handle received Data
-        }
+    private var host: Host? = null
+
+    //Reference: https://stackoverflow.com/a/14440308/10413818
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        host = context as Host
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,9 +54,9 @@ class PetListFragment : Fragment() {
                 handleAudio(icon, soundRes)
             }
 
-            /*petRow.setOnClickListener {
-                //pass data to Host...
-            }*/
+            petRow.setOnClickListener {
+                host?.onPetSelected(pet)
+            }
 
         }
 
@@ -62,11 +64,9 @@ class PetListFragment : Fragment() {
             val addFAB: FloatingActionButton = view.findViewById(R.id.add_fab)
             addFAB.isVisible = true
             addFAB.setOnClickListener {
-                val intent = Intent(requireContext(), AddAnimalActivity::class.java)
-                handleAnimalData.launch(intent)
+                host?.onAddClicked()
             }
         }
-
 
     }
 
@@ -94,18 +94,9 @@ class PetListFragment : Fragment() {
         player.release()
     }
 
-    //Defines PetListFragment.Host interface
-    // to help PetListFragment communicate with the parent activity:
     interface Host {
-        //TODO: Navigates to PetDetailActivity on phone
-        //TODO: Shows PetDetailFragment on tablet, on the right
         fun onPetSelected(pet: Animal)
-
-        //TODO: When fab button is clicked, navigates to AddAnimalActivity
-        //TODO: This intent returns an animal that will be then added to Repository.pets
-        //Volunteers can quickly add new animals to the list.
         fun onAddClicked()
-
         fun isTwoPane(): Boolean
     }
 

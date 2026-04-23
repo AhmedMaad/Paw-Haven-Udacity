@@ -14,7 +14,7 @@ class PetDetailActivity : BaseActivity() {
 
         supportFragmentManager
             .beginTransaction()
-            .add(R.id.listContainer, PetDetailFragment())
+            .add(R.id.detailContainer, PetDetailFragment())
             .commit()
 
     }
