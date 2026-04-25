@@ -1,6 +1,5 @@
 package com.udacity.pawhaven
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.udacity.pawhaven.audio.PawHavenAudioPlayer
 import com.udacity.pawhaven.audio.PawHavenAudioPlayerImpl
-import com.udacity.pawhaven.data.Animal
 import com.udacity.pawhaven.data.IntentExtras
 import com.udacity.pawhaven.data.Repository
 import com.udacity.pawhaven.data.Role
@@ -36,27 +34,31 @@ class PetDetailFragment : Fragment() {
 
         setUpOnAdoptAPawButtonClicked(view)
 
-        val receivedPet = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
-            arguments?.getParcelable(IntentExtras.EXTRA_PET, Animal::class.java)
-        else
-            arguments?.getParcelable(IntentExtras.EXTRA_PET)
+        val receivedPetID = arguments?.getString(IntentExtras.EXTRA_PET_ID)
 
-        if (receivedPet != null) {
-            val animalIV: ImageView = view.findViewById(R.id.animal_iv)
-            val animalNameTV: TextView = view.findViewById(R.id.animal_name_tv)
-            val animalAgeTV: TextView = view.findViewById(R.id.animal_age_tv)
-            val descriptionTV: TextView = view.findViewById(R.id.description_tv)
-            val shareIB: ImageButton = view.findViewById(R.id.share_ib)
-            val audioView: View = view.findViewById(R.id.play_pause_view)
+        if (receivedPetID != null) {
 
-            animalIV.setImageResource(receivedPet.imageRes)
-            animalNameTV.text = receivedPet.name
-            animalAgeTV.text = getString(R.string.age_years_format, receivedPet.age)
-            descriptionTV.text = receivedPet.description
+            val pet = Repository.getPetById(receivedPetID)
 
-            setUpOnShareImageButtonClicked(shareIB, receivedPet.description)
-            setUpOnAudioIconClicked(audioView, receivedPet.soundRes)
+            if (pet != null){
+                val animalIV: ImageView = view.findViewById(R.id.animal_iv)
+                val animalNameTV: TextView = view.findViewById(R.id.animal_name_tv)
+                val animalAgeTV: TextView = view.findViewById(R.id.animal_age_tv)
+                val descriptionTV: TextView = view.findViewById(R.id.description_tv)
+                val shareIB: ImageButton = view.findViewById(R.id.share_ib)
+                val audioView: View = view.findViewById(R.id.play_pause_view)
+
+                animalIV.setImageResource(pet.imageRes)
+                animalNameTV.text = pet.name
+                animalAgeTV.text = getString(R.string.age_years_format, pet.age)
+                descriptionTV.text = pet.description
+
+                setUpOnShareImageButtonClicked(shareIB, pet.description)
+                setUpOnAudioIconClicked(audioView, pet.soundRes)
+            }
+
         }
+
     }
 
     private fun setUpOnShareImageButtonClicked(shareIB: ImageButton, description: String) {

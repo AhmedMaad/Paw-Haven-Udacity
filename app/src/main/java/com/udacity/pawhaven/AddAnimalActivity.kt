@@ -146,7 +146,8 @@ class AddAnimalActivity : BaseActivity() {
 
     override fun onPause() {
         super.onPause()
-        audio.release()
+        if (this::audio.isInitialized)
+            audio.release()
     }
 
 }

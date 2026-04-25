@@ -1,7 +1,6 @@
 package com.udacity.pawhaven
 
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -44,7 +43,7 @@ class PetListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val isTwoPane = requireArguments().getBoolean(IntentExtras.EXTRA_TWO_PANE, false)
+        /*val isTwoPane = requireArguments().getBoolean(IntentExtras.EXTRA_TWO_PANE, false)
 
         player = PawHavenAudioPlayerImpl.getInstance(requireContext())
 
@@ -70,8 +69,42 @@ class PetListFragment : Fragment() {
             addFAB.setOnClickListener {
                 host?.onAddClicked()
             }
+        }*/
+
+        showAnimalsList(view)
+    }
+
+    private fun showAnimalsList(view: View){
+        val isTwoPane = requireArguments().getBoolean(IntentExtras.EXTRA_TWO_PANE, false)
+
+        player = PawHavenAudioPlayerImpl.getInstance(requireContext())
+
+        val animalsContainer: LinearLayout = view.findViewById(R.id.animals_container)
+        animalsContainer.removeAllViews()
+
+        for (pet in Repository.pets) {
+            val petRow = PetRowComponent(requireContext())
+
+            animalsContainer.addView(petRow)
+            petRow.bind(pet, isTwoPane) { icon, soundRes ->
+                handleAudio(icon, soundRes)
+            }
+
+            petRow.setOnClickListener {
+                stopCurrentAudio()
+                host?.onPetSelected(pet)
+            }
+
         }
 
+        if (Repository.user?.role == Role.VOLUNTEER) {
+            val addFAB: FloatingActionButton = view.findViewById(R.id.add_fab)
+            addFAB.isVisible = true
+            addFAB.setOnClickListener {
+                stopCurrentAudio()
+                host?.onAddClicked()
+            }
+        }
     }
 
     private fun handleAudio(audioIcon: ImageView, @RawRes audio: Int) {
@@ -104,7 +137,15 @@ class PetListFragment : Fragment() {
         fun isTwoPane(): Boolean
     }
 
-    //TODO: The PetListFragment should expose a method refreshPetList, to allow the list to be updated.
+    fun refreshPetList(){
+        showAnimalsList(requireView())
+    }
+
+    private fun stopCurrentAudio() {
+        player.stop()
+        playingIcon?.setImageResource(R.drawable.ic_play)
+        playingIcon = null
+    }
 
 }
 

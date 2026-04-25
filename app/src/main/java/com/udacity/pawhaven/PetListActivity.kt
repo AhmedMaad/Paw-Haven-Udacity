@@ -3,9 +3,7 @@ package com.udacity.pawhaven
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.udacity.pawhaven.data.Animal
 import com.udacity.pawhaven.data.IntentExtras
@@ -15,13 +13,18 @@ class PetListActivity : BaseActivity(), PetListFragment.Host {
 
     private val handleAnimalData =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK && result.data != null){
+            if (result.resultCode == RESULT_OK && result.data != null) {
                 val receivedPet = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
                     result.data!!.getParcelableExtra(IntentExtras.EXTRA_PET, Animal::class.java)
                 else
                     result.data!!.getParcelableExtra(IntentExtras.EXTRA_PET)
 
                 Repository.pets.add(receivedPet!!)
+
+                val fragment =
+                    supportFragmentManager.findFragmentById(R.id.listContainer) as PetListFragment
+
+                fragment.refreshPetList()
             }
 
         }
@@ -45,7 +48,7 @@ class PetListActivity : BaseActivity(), PetListFragment.Host {
     override fun onPetSelected(pet: Animal) {
         if (isTwoPane()) {
             val data = Bundle()
-            data.putParcelable(IntentExtras.EXTRA_PET, pet)
+            data.putString(IntentExtras.EXTRA_PET_ID, pet.id)
 
             val detailFragment = PetDetailFragment()
             detailFragment.setArguments(data)
@@ -56,7 +59,7 @@ class PetListActivity : BaseActivity(), PetListFragment.Host {
                 .commit()
         } else {
             val i = Intent(this, PetDetailActivity::class.java)
-            i.putExtra(IntentExtras.EXTRA_PET, pet)
+            i.putExtra(IntentExtras.EXTRA_PET_ID, pet.id)
             startActivity(i)
         }
     }
