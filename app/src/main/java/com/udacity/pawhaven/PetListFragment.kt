@@ -42,35 +42,6 @@ class PetListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        /*val isTwoPane = requireArguments().getBoolean(IntentExtras.EXTRA_TWO_PANE, false)
-
-        player = PawHavenAudioPlayerImpl.getInstance(requireContext())
-
-        val animalsContainer: LinearLayout = view.findViewById(R.id.animals_container)
-
-        for (pet in Repository.pets) {
-            val petRow = PetRowComponent(requireContext())
-
-            animalsContainer.addView(petRow)
-            petRow.bind(pet, isTwoPane) { icon, soundRes ->
-                handleAudio(icon, soundRes)
-            }
-
-            petRow.setOnClickListener {
-                host?.onPetSelected(pet)
-            }
-
-        }
-
-        if (Repository.user?.role == Role.VOLUNTEER) {
-            val addFAB: FloatingActionButton = view.findViewById(R.id.add_fab)
-            addFAB.isVisible = true
-            addFAB.setOnClickListener {
-                host?.onAddClicked()
-            }
-        }*/
-
         showAnimalsList(view)
     }
 
