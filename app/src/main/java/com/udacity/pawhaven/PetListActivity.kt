@@ -20,18 +20,30 @@ class PetListActivity : BaseActivity(), PetListFragment.Host {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.pet_list_activity)
 
+        val data = Bundle()
+        data.putBoolean(IntentExtras.EXTRA_TWO_PANE, isTwoPane())
+
+        val listFragment = PetListFragment()
+        listFragment.setArguments(data)
+
         supportFragmentManager
             .beginTransaction()
-            .add(R.id.listContainer, PetListFragment())
+            .add(R.id.listContainer, listFragment)
             .commit()
     }
 
     override fun onPetSelected(pet: Animal) {
         if (isTwoPane()) {
-            //TODO: Send the pet data
+
+            val data = Bundle()
+            data.putParcelable(IntentExtras.EXTRA_PET, pet)
+
+            val detailFragment = PetDetailFragment()
+            detailFragment.setArguments(data)
+
             supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.detailContainer, PetDetailFragment())
+                .replace(R.id.detailContainer, detailFragment)
                 .commit()
         } else {
             val i = Intent(this, PetDetailActivity::class.java)

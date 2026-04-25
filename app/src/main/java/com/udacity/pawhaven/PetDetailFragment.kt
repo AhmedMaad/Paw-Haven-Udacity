@@ -1,5 +1,6 @@
 package com.udacity.pawhaven
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +16,7 @@ import androidx.fragment.app.Fragment
 import com.udacity.pawhaven.audio.PawHavenAudioPlayer
 import com.udacity.pawhaven.audio.PawHavenAudioPlayerImpl
 import com.udacity.pawhaven.data.Animal
-import com.udacity.pawhaven.data.Dog
+import com.udacity.pawhaven.data.IntentExtras
 import com.udacity.pawhaven.data.Repository
 import com.udacity.pawhaven.data.Role
 
@@ -32,38 +33,66 @@ class PetDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUpAdoptAPawButton(view)
 
-        val animalIV: ImageView = view.findViewById(R.id.animal_iv)
-        val animalNameTV: TextView = view.findViewById(R.id.animal_name_tv)
-        val animalAgeTV: TextView = view.findViewById(R.id.animal_age_tv)
-        val shareIB: ImageButton = view.findViewById(R.id.share_ib)
+        setUpOnAdoptAPawButtonClicked(view)
 
-        val audioView: View = view.findViewById(R.id.play_pause_view)
-        val audioIcon: ImageView = audioView.findViewById(R.id.icon)
+        val receivedPet = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+            arguments?.getParcelable(IntentExtras.EXTRA_PET, Animal::class.java)
+        else
+            arguments?.getParcelable(IntentExtras.EXTRA_PET)
 
-        val pet: Animal = Dog("", 12) //this pet will be received as parcelize
-        animalIV.setImageResource(pet.imageRes)
-        animalNameTV.text = pet.name
-        animalAgeTV.text = getString(R.string.age_years_format, pet.age)
-        audio = PawHavenAudioPlayerImpl.getInstance(requireContext())
+        if (receivedPet != null) {
+            val animalIV: ImageView = view.findViewById(R.id.animal_iv)
+            val animalNameTV: TextView = view.findViewById(R.id.animal_name_tv)
+            val animalAgeTV: TextView = view.findViewById(R.id.animal_age_tv)
+            val descriptionTV: TextView = view.findViewById(R.id.description_tv)
+            val shareIB: ImageButton = view.findViewById(R.id.share_ib)
+            val audioView: View = view.findViewById(R.id.play_pause_view)
 
+            animalIV.setImageResource(receivedPet.imageRes)
+            animalNameTV.text = receivedPet.name
+            animalAgeTV.text = getString(R.string.age_years_format, receivedPet.age)
+            descriptionTV.text = receivedPet.description
 
+            setUpOnShareImageButtonClicked(shareIB, receivedPet.description)
+            setUpOnAudioIconClicked(audioView, receivedPet.soundRes)
+        }
+    }
+
+    private fun setUpOnShareImageButtonClicked(shareIB: ImageButton, description: String) {
         shareIB.setOnClickListener {
             ShareCompat
                 .IntentBuilder(requireContext())
                 .setType("text/plain")
                 .setChooserTitle(getString(R.string.share_animal_with))
-                .setText(pet.description)
+                .setText(description)
                 .startChooser()
         }
+    }
+
+    private fun setUpOnAudioIconClicked(audioView: View, soundRes: Int) {
+        val audioIcon: ImageView = audioView.findViewById(R.id.icon)
+
+        audio = PawHavenAudioPlayerImpl.getInstance(requireContext())
+
+        var isPlaying = false
 
         audioIcon.setOnClickListener {
-            //TODO: Use the play/pause view in the xml
-            //TODO: Show pause button while playing the audio
-            audio.play(pet.soundRes) {}
-        }
 
+            if (!isPlaying) {
+                audio.play(soundRes) {
+                    isPlaying = false
+                    audioIcon.setImageResource(R.drawable.ic_play)
+                }
+                isPlaying = true
+                audioIcon.setImageResource(R.drawable.ic_pause)
+            } else {
+                audio.stop()
+                isPlaying = false
+                audioIcon.setImageResource(R.drawable.ic_play)
+            }
+
+        }
     }
 
     override fun onPause() {
@@ -71,7 +100,7 @@ class PetDetailFragment : Fragment() {
         audio.release()
     }
 
-    fun setUpAdoptAPawButton(view: View) {
+    fun setUpOnAdoptAPawButtonClicked(view: View) {
 
         val adoptPawBtn: Button = view.findViewById(R.id.adopt_a_paw_btn)
 

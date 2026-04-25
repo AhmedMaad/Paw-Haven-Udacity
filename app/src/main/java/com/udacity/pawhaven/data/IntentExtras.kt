@@ -12,4 +12,5 @@ object IntentExtras {
     const val EXTRA_PERSON = "extra_person"
 
     const val EXTRA_PET = "pet"
+    const val EXTRA_TWO_PANE = "two_pane"
 }

@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.view.isVisible
 import com.udacity.pawhaven.R
 import com.udacity.pawhaven.data.Animal
 
@@ -34,13 +35,16 @@ class PetRowComponent @JvmOverloads constructor(
         audioIcon = audioView.findViewById(R.id.icon)
     }
 
-    fun bind(pet: Animal, onAudioClick: (ImageView, Int) -> Unit) {
+    fun bind(pet: Animal, isTwoPane: Boolean, onAudioClick: (ImageView, Int) -> Unit) {
         animalIV.setImageResource(pet.imageRes)
         animalNameTV.text = pet.name
         animalAgeTV.text = context.getString(R.string.age_years_format, pet.age)
-        audioIcon.setOnClickListener {
-            onAudioClick(audioIcon, pet.soundRes)
-        }
+        if (isTwoPane)
+            audioIcon.isVisible = false
+        else
+            audioIcon.setOnClickListener {
+                onAudioClick(audioIcon, pet.soundRes)
+            }
     }
 
 }

@@ -1,6 +1,7 @@
 package com.udacity.pawhaven
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import com.udacity.pawhaven.audio.PawHavenAudioPlayer
 import com.udacity.pawhaven.audio.PawHavenAudioPlayerImpl
 import com.udacity.pawhaven.components.PetRowComponent
 import com.udacity.pawhaven.data.Animal
+import com.udacity.pawhaven.data.IntentExtras
 import com.udacity.pawhaven.data.Repository
 import com.udacity.pawhaven.data.Role
 
@@ -42,6 +44,8 @@ class PetListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val isTwoPane = requireArguments().getBoolean(IntentExtras.EXTRA_TWO_PANE, false)
+
         player = PawHavenAudioPlayerImpl.getInstance(requireContext())
 
         val animalsContainer: LinearLayout = view.findViewById(R.id.animals_container)
@@ -50,7 +54,7 @@ class PetListFragment : Fragment() {
             val petRow = PetRowComponent(requireContext())
 
             animalsContainer.addView(petRow)
-            petRow.bind(pet) { icon, soundRes ->
+            petRow.bind(pet, isTwoPane) { icon, soundRes ->
                 handleAudio(icon, soundRes)
             }
 
