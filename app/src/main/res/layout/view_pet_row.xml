@@ -49,9 +49,11 @@
                 android:textSize="22sp" />
         </LinearLayout>
 
-        <include
+        <com.udacity.pawhaven.components.PlayPauseComponent
             android:id="@+id/play_pause_view"
-            layout="@layout/play_pause_view" />
+            android:layout_width="60dp"
+            android:layout_height="60dp" />
 
     </LinearLayout>
+
 </com.google.android.material.card.MaterialCardView>

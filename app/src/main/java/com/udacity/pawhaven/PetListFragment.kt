@@ -5,25 +5,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.annotation.RawRes
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.udacity.pawhaven.audio.PawHavenAudioPlayer
-import com.udacity.pawhaven.audio.PawHavenAudioPlayerImpl
 import com.udacity.pawhaven.components.PetRowComponent
 import com.udacity.pawhaven.data.Animal
 import com.udacity.pawhaven.data.IntentExtras
 import com.udacity.pawhaven.data.Repository
 import com.udacity.pawhaven.data.Role
 
-
 class PetListFragment : Fragment() {
-
-    private lateinit var player: PawHavenAudioPlayer
-    var playingIcon: ImageView? = null
 
     private var host: Host? = null
 
@@ -45,10 +37,8 @@ class PetListFragment : Fragment() {
         showAnimalsList(view)
     }
 
-    private fun showAnimalsList(view: View){
+    private fun showAnimalsList(view: View) {
         val isTwoPane = requireArguments().getBoolean(IntentExtras.EXTRA_TWO_PANE, false)
-
-        player = PawHavenAudioPlayerImpl.getInstance(requireContext())
 
         val animalsContainer: LinearLayout = view.findViewById(R.id.animals_container)
         animalsContainer.removeAllViews()
@@ -57,12 +47,10 @@ class PetListFragment : Fragment() {
             val petRow = PetRowComponent(requireContext())
 
             animalsContainer.addView(petRow)
-            petRow.bind(pet, isTwoPane) { icon, soundRes ->
-                handleAudio(icon, soundRes)
-            }
+
+            petRow.bind(pet, isTwoPane)
 
             petRow.setOnClickListener {
-                stopCurrentAudio()
                 host?.onPetSelected(pet)
             }
 
@@ -72,34 +60,9 @@ class PetListFragment : Fragment() {
             val addFAB: FloatingActionButton = view.findViewById(R.id.add_fab)
             addFAB.isVisible = true
             addFAB.setOnClickListener {
-                stopCurrentAudio()
                 host?.onAddClicked()
             }
         }
-    }
-
-    private fun handleAudio(audioIcon: ImageView, @RawRes audio: Int) {
-        if (playingIcon != audioIcon) {
-            //Handling diff. audio row selection
-            playingIcon?.setImageResource(R.drawable.ic_play)
-
-            audioIcon.setImageResource(R.drawable.ic_pause)
-            player.play(audio) {
-                audioIcon.setImageResource(R.drawable.ic_play)
-                playingIcon = null
-            }
-
-            playingIcon = audioIcon
-        } else {
-            audioIcon.setImageResource(R.drawable.ic_play)
-            player.stop()
-            playingIcon = null
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        player.release()
     }
 
     interface Host {
@@ -108,14 +71,8 @@ class PetListFragment : Fragment() {
         fun isTwoPane(): Boolean
     }
 
-    fun refreshPetList(){
+    fun refreshPetList() {
         showAnimalsList(requireView())
-    }
-
-    private fun stopCurrentAudio() {
-        player.stop()
-        playingIcon?.setImageResource(R.drawable.ic_play)
-        playingIcon = null
     }
 
 }

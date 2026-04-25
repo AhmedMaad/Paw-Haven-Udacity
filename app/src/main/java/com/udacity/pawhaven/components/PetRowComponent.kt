@@ -3,7 +3,6 @@ package com.udacity.pawhaven.components
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -20,7 +19,7 @@ class PetRowComponent @JvmOverloads constructor(
     private var animalIV: ImageView
     private var animalNameTV: TextView
     private var animalAgeTV: TextView
-    private var audioIcon: ImageView
+    private var audioComponent: PlayPauseComponent
 
     init {
         orientation = VERTICAL
@@ -30,21 +29,17 @@ class PetRowComponent @JvmOverloads constructor(
         animalIV = view.findViewById(R.id.petImage)
         animalNameTV = view.findViewById(R.id.petName)
         animalAgeTV = view.findViewById(R.id.petAge)
-
-        val audioView: View = view.findViewById(R.id.play_pause_view)
-        audioIcon = audioView.findViewById(R.id.icon)
+        audioComponent = view.findViewById(R.id.play_pause_view)
     }
 
-    fun bind(pet: Animal, isTwoPane: Boolean, onAudioClick: (ImageView, Int) -> Unit) {
+    fun bind(pet: Animal, isTwoPane: Boolean) {
         animalIV.setImageResource(pet.imageRes)
         animalNameTV.text = pet.name
         animalAgeTV.text = context.getString(R.string.age_years_format, pet.age)
         if (isTwoPane)
-            audioIcon.isVisible = false
+            audioComponent.isVisible = false
         else
-            audioIcon.setOnClickListener {
-                onAudioClick(audioIcon, pet.soundRes)
-            }
+            audioComponent.setSound(pet.soundRes)
     }
 
 }
