@@ -29,6 +29,10 @@ enum class AnimalType(
     ): Animal =
         when (this) {
             DOG -> Dog(name, age, description, imageRes, soundRes)
-            else -> TODO()
+            CAT -> Cat(name, age, description, imageRes, soundRes)
+            PARROT -> Parrot(name, age, description, imageRes, soundRes)
+            ELEPHANT -> Elephant(name, age, description, imageRes, soundRes)
+            LION -> Lion(name, age, description, imageRes, soundRes)
+            BIRD -> Bird(name, age, description, imageRes, soundRes)
         }
 }

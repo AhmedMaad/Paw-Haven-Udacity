@@ -67,7 +67,8 @@
         <EditText
             android:id="@+id/name_et"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:inputType="textPersonName" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -107,20 +108,19 @@
             android:id="@+id/picture_iv"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
             android:scaleType="centerCrop"
             tools:src="@drawable/ic_dog" />
 
-        <ImageView
-            android:id="@+id/sound_iv"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:padding="8dp"
-            android:src="@drawable/ic_play"
+        <include
+            android:id="@+id/play_pause_view"
+            layout="@layout/play_pause_view"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:visibility="invisible"
             tools:visibility="visible" />
 
     </LinearLayout>
-
 
     <TextView
         android:id="@+id/sound_tv"

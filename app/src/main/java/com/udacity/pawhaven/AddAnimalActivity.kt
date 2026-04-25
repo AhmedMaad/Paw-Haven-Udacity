@@ -1,7 +1,8 @@
 package com.udacity.pawhaven
 
-import android.media.MediaPlayer
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
@@ -9,12 +10,13 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.udacity.pawhaven.audio.PawHavenAudioPlayer
 import com.udacity.pawhaven.audio.PawHavenAudioPlayerImpl
 import com.udacity.pawhaven.data.AnimalType
+import com.udacity.pawhaven.data.IntentExtras
 
 class AddAnimalActivity : BaseActivity() {
 
@@ -25,23 +27,53 @@ class AddAnimalActivity : BaseActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_add_animal)
 
-        val addBtn: Button = findViewById(R.id.add_btn)
-
-        audio = PawHavenAudioPlayerImpl.getInstance(this)
-
         setUpOnBackButtonClicked()
         setUpOnSoundTextClicked()
         setUpOnTypeAutoCompleteSelected()
+        setUpOnAddButtonClicked()
+
+        //Reference: https://stackoverflow.com/a/78858366/10413818
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                setResult(RESULT_CANCELED)
+                finish()
+            }
+        })
+
+    }
+
+    private fun setUpOnAddButtonClicked() {
+        val addBtn: Button = findViewById(R.id.add_btn)
 
         addBtn.setOnClickListener {
-            //Create an animal object of this type using AnimalType.createAnimal
-            //Return this animal back to PetListActivity as an extra
+            val typeACTV: AutoCompleteTextView = findViewById(R.id.animal_type_actv)
+            val nameET: TextView = findViewById(R.id.name_et)
+            val ageET: TextView = findViewById(R.id.age_et)
+
+            val typeString = typeACTV.text.toString()
+            val name = nameET.text.toString()
+            val age = ageET.text.toString()
+
+            if (name.isBlank() || age.isBlank() || typeString.isBlank())
+                Toast.makeText(this, R.string.error_required, Toast.LENGTH_SHORT).show()
+            else {
+                val animalType = when (typeString) {
+                    "Dog" -> AnimalType.DOG
+                    "Cat" -> AnimalType.CAT
+                    "Parrot" -> AnimalType.PARROT
+                    "Elephant" -> AnimalType.ELEPHANT
+                    "Lion" -> AnimalType.LION
+                    else -> AnimalType.BIRD
+                }
+
+                val animal = animalType.createAnimal(name, age.toInt())
+                val intent = Intent()
+                intent.putExtra(IntentExtras.EXTRA_PET, animal)
+                setResult(RESULT_OK, intent)
+                finish()
+            }
+
         }
-
-        //TODO: Animal picture and sound to be changed according to changing "Animal Type"
-        //Updates preview image and sound. This preview image is provided as a default
-        // in the AnimalType.defaultIconRes and AnimalType.defaultSoundRes
-
     }
 
     private fun setUpOnTypeAutoCompleteSelected() {
@@ -67,16 +99,32 @@ class AddAnimalActivity : BaseActivity() {
 
     private fun handleSound(soundRes: Int) {
 
-        //TODO: Use the play/pause view in the xml
-        //TODO: Show pause button while playing the audio
+        audio = PawHavenAudioPlayerImpl.getInstance(this)
+        val audioView: View = findViewById(R.id.play_pause_view)
+        val audioIcon: ImageView = audioView.findViewById(R.id.icon)
 
-        val soundIV: ImageView = findViewById(R.id.sound_iv)
+        if (!audioView.isVisible)
+            audioView.isVisible = true
 
-        if (!soundIV.isVisible)
-            soundIV.isVisible = true
+        audio = PawHavenAudioPlayerImpl.getInstance(this)
 
-        soundIV.setOnClickListener {
-            audio.play(soundRes) {}
+        var isPlaying = false
+
+        audioIcon.setOnClickListener {
+
+            if (!isPlaying) {
+                audio.play(soundRes) {
+                    isPlaying = false
+                    audioIcon.setImageResource(R.drawable.ic_play)
+                }
+                isPlaying = true
+                audioIcon.setImageResource(R.drawable.ic_pause)
+            } else {
+                audio.stop()
+                isPlaying = false
+                audioIcon.setImageResource(R.drawable.ic_play)
+            }
+
         }
 
     }
@@ -91,6 +139,7 @@ class AddAnimalActivity : BaseActivity() {
     private fun setUpOnBackButtonClicked() {
         val backIV: ImageView = findViewById(R.id.back_iv)
         backIV.setOnClickListener {
+            setResult(RESULT_CANCELED)
             finish()
         }
     }

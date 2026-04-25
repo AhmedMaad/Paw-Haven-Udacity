@@ -1,6 +1,7 @@
 package com.udacity.pawhaven
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -8,12 +9,21 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.udacity.pawhaven.data.Animal
 import com.udacity.pawhaven.data.IntentExtras
+import com.udacity.pawhaven.data.Repository
 
 class PetListActivity : BaseActivity(), PetListFragment.Host {
 
     private val handleAnimalData =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            //TODO: Handle received Data
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK && result.data != null){
+                val receivedPet = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                    result.data!!.getParcelableExtra(IntentExtras.EXTRA_PET, Animal::class.java)
+                else
+                    result.data!!.getParcelableExtra(IntentExtras.EXTRA_PET)
+
+                Repository.pets.add(receivedPet!!)
+            }
+
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +44,6 @@ class PetListActivity : BaseActivity(), PetListFragment.Host {
 
     override fun onPetSelected(pet: Animal) {
         if (isTwoPane()) {
-
             val data = Bundle()
             data.putParcelable(IntentExtras.EXTRA_PET, pet)
 
@@ -55,8 +64,6 @@ class PetListActivity : BaseActivity(), PetListFragment.Host {
     override fun onAddClicked() {
         val intent = Intent(this, AddAnimalActivity::class.java)
         handleAnimalData.launch(intent)
-        //TODO: This intent returns an animal that will be then added to Repository.pets
-        //Volunteers can quickly add new animals to the list.
     }
 
     override fun isTwoPane(): Boolean {
