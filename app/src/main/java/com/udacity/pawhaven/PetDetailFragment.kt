@@ -19,8 +19,6 @@ import com.udacity.pawhaven.data.Role
 
 class PetDetailFragment : Fragment() {
 
-    private lateinit var audioComponent: PlayPauseComponent
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,7 +43,7 @@ class PetDetailFragment : Fragment() {
                 val animalAgeTV: TextView = view.findViewById(R.id.animal_age_tv)
                 val descriptionTV: TextView = view.findViewById(R.id.description_tv)
                 val shareIB: ImageButton = view.findViewById(R.id.share_ib)
-                audioComponent = view.findViewById(R.id.play_pause_view)
+                val audioComponent: PlayPauseComponent = view.findViewById(R.id.play_pause_view)
 
                 animalIV.setImageResource(pet.imageRes)
                 animalNameTV.text = pet.name

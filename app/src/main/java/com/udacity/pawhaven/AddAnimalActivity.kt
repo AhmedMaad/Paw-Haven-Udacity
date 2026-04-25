@@ -2,7 +2,6 @@ package com.udacity.pawhaven
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
@@ -13,14 +12,11 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.isVisible
-import com.udacity.pawhaven.audio.PawHavenAudioPlayer
-import com.udacity.pawhaven.audio.PawHavenAudioPlayerImpl
+import com.udacity.pawhaven.components.PlayPauseComponent
 import com.udacity.pawhaven.data.AnimalType
 import com.udacity.pawhaven.data.IntentExtras
 
 class AddAnimalActivity : BaseActivity() {
-
-    private lateinit var audio: PawHavenAudioPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,35 +94,12 @@ class AddAnimalActivity : BaseActivity() {
     }
 
     private fun handleSound(soundRes: Int) {
+        val audioComponent: PlayPauseComponent = findViewById(R.id.play_pause_view)
 
-        audio = PawHavenAudioPlayerImpl.getInstance(this)
-        val audioView: View = findViewById(R.id.play_pause_view)
-        val audioIcon: ImageView = audioView.findViewById(R.id.icon)
 
-        if (!audioView.isVisible)
-            audioView.isVisible = true
-
-        audio = PawHavenAudioPlayerImpl.getInstance(this)
-
-        var isPlaying = false
-
-        audioIcon.setOnClickListener {
-
-            if (!isPlaying) {
-                audio.play(soundRes) {
-                    isPlaying = false
-                    audioIcon.setImageResource(R.drawable.ic_play)
-                }
-                isPlaying = true
-                audioIcon.setImageResource(R.drawable.ic_pause)
-            } else {
-                audio.stop()
-                isPlaying = false
-                audioIcon.setImageResource(R.drawable.ic_play)
-            }
-
-        }
-
+        if (!audioComponent.isVisible)
+            audioComponent.isVisible = true
+        audioComponent.setSound(soundRes)
     }
 
     private fun setUpOnSoundTextClicked() {
@@ -142,12 +115,6 @@ class AddAnimalActivity : BaseActivity() {
             setResult(RESULT_CANCELED)
             finish()
         }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        if (this::audio.isInitialized)
-            audio.release()
     }
 
 }
