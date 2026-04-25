@@ -41,7 +41,7 @@ class PetListActivity : BaseActivity(), PetListFragment.Host {
 
         supportFragmentManager
             .beginTransaction()
-            .add(R.id.listContainer, listFragment)
+            .replace(R.id.listContainer, listFragment)
             .commit()
     }
 
