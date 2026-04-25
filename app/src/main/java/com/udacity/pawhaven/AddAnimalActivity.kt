@@ -86,6 +86,7 @@ class AddAnimalActivity : BaseActivity() {
             soundRes = AnimalType.entries[position].defaultSoundRes
 
             picIV.setImageResource(AnimalType.entries[position].defaultIconRes)
+            picIV.contentDescription = availableAnimals[position]
 
             handleSound(soundRes)
         }

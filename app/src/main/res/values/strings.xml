@@ -79,5 +79,6 @@
     <string name="share_animal_with">"Share animal with: "</string>
     <string name="emoji">Emoji</string>
     <string name="sound">Sound</string>
+    <string name="age_hint">Enter your age</string>
 
 </resources>
